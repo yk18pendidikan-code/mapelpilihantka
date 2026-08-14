@@ -15,7 +15,7 @@
       border-bottom-left-radius: 36px;
       border-bottom-right-radius: 36px;
     }
-    /* Smooth Scrollbar Dropdown */
+    /* Scrollbar Rapi untuk Dropdown */
     .dropdown-scroll::-webkit-scrollbar {
       width: 6px;
     }
@@ -56,12 +56,12 @@
             class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
         </div>
 
-        <!-- Input No WhatsApp (Auto Convert 0 -> 62) -->
+        <!-- Input No WhatsApp -->
         <div>
           <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Nomor WhatsApp</label>
           <input type="tel" id="wa" required placeholder="Contoh: 08123456789" oninput="formatWA(this)" onchange="checkExistingData()"
             class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
-          <p class="text-[11px] text-gray-400 mt-1">*Awalan '0' otomatis diubah ke '62'. Tekan di luar kolom untuk mengecek data lama.</p>
+          <p class="text-[11px] text-gray-400 mt-1">*Awalan '0' otomatis diubah ke '62'. Klik di luar kolom untuk mengecek data lama.</p>
         </div>
 
         <!-- ==================== PILIHAN 1 ==================== -->
@@ -72,10 +72,10 @@
             <!-- PTN 1 -->
             <div class="relative" id="ptnContainer1">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">1. Cari Universitas / PTN</label>
-              <input type="text" id="ptnInput1" required placeholder="Klik untuk memilih Universitas / PTN..." 
+              <input type="text" id="ptnInput1" required placeholder="Klik untuk memilih Universitas..." 
                 onclick="handlePTNFocus(1)" oninput="handlePTNInput(1)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
-              <div id="dropdownPTN1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownPTN1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-60 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
 
             <!-- Jurusan 1 -->
@@ -84,7 +84,7 @@
               <input type="text" id="jurusanInput1" required disabled placeholder="Pilih PTN terlebih dahulu..." 
                 onclick="handleJurusanFocus(1)" oninput="handleJurusanInput(1)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm bg-gray-50 disabled:cursor-not-allowed">
-              <div id="dropdownJurusan1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownJurusan1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-60 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
           </div>
           <input type="hidden" id="selectedPtnProdi1">
@@ -98,10 +98,10 @@
             <!-- PTN 2 -->
             <div class="relative" id="ptnContainer2">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">1. Cari Universitas / PTN</label>
-              <input type="text" id="ptnInput2" required placeholder="Klik untuk memilih Universitas / PTN..." 
+              <input type="text" id="ptnInput2" required placeholder="Klik untuk memilih Universitas..." 
                 onclick="handlePTNFocus(2)" oninput="handlePTNInput(2)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
-              <div id="dropdownPTN2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownPTN2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-60 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
 
             <!-- Jurusan 2 -->
@@ -110,7 +110,7 @@
               <input type="text" id="jurusanInput2" required disabled placeholder="Pilih PTN terlebih dahulu..." 
                 onclick="handleJurusanFocus(2)" oninput="handleJurusanInput(2)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm bg-gray-50 disabled:cursor-not-allowed">
-              <div id="dropdownJurusan2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownJurusan2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-60 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
           </div>
           <input type="hidden" id="selectedPtnProdi2">
@@ -167,17 +167,17 @@
   </div>
 
   <script>
+    // GANTI SCRIPT_URL DENGAN URL WEB APP DEPLOYMENT ANDA
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqSuyBdYNGpeKz31broAZP6evCHD5ssuYLWSIXmVgW3mU1SSfMwCDWo6NJZswN5-q4/exec";
 
-    // Memory Cache
-    let globalPTNList = null;          // List semua PTN unik
-    let ptnJurusanCache = {};          // Map: "NAMA PTN" -> [ array of items ]
+    // Cache Data Lengkap
+    let globalPTNList = null;          // Array seluruh nama PTN unik
+    let ptnJurusanCache = {};          // Object Cache: "NAMA PTN" -> [ Jurusan-Jurusan ]
     let isFetchingGlobalPTN = false;
 
     let selectedPTN = { 1: '', 2: '' };
     let selectedJurusan = { 1: '', 2: '' };
 
-    // Format WA 0 -> 62
     function formatWA(input) {
       let val = input.value.replace(/[^0-9]/g, '');
       if (val.startsWith('0')) {
@@ -186,45 +186,71 @@
       input.value = val;
     }
 
-    // HTML Loading Indicator
-    function getLoadingHTML() {
+    // Spinner Animasi Pemuatan Data
+    function getLoadingHTML(msg = "Memuat data dari Spreadsheet...") {
       return `
         <div class="px-4 py-4 text-xs text-gray-500 font-medium text-center flex items-center justify-center gap-2">
           <svg class="animate-spin h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-          <span>Data sedang dimuat...</span>
+          <span>${msg}</span>
         </div>`;
     }
 
     // ==========================================
-    // 1. UNIVERSITAS / PTN HANDLERS
+    // 1. AMBIL SELURUH DATA PTN DARI SPREADSHEET
     // ==========================================
+    function fetchAllPTNFromSpreadsheet(callback) {
+      if (globalPTNList !== null) {
+        if (callback) callback();
+        return;
+      }
+
+      if (isFetchingGlobalPTN) return;
+      isFetchingGlobalPTN = true;
+
+      fetch(`${SCRIPT_URL}?action=getPTN`)
+        .then(res => res.json())
+        .then(res => {
+          isFetchingGlobalPTN = false;
+          if (res.status === 'success' && res.data) {
+            globalPTNList = res.data;
+          } else {
+            globalPTNList = [];
+          }
+          if (callback) callback();
+        })
+        .catch(err => {
+          isFetchingGlobalPTN = false;
+          globalPTNList = [];
+          if (callback) callback();
+        });
+    }
 
     function handlePTNFocus(num) {
       const dropdown = document.getElementById(`dropdownPTN${num}`);
-      
-      // Jika data PTN sudah siap di cache
+
       if (globalPTNList && globalPTNList.length > 0) {
         renderPTNDropdown(num, globalPTNList, document.getElementById(`ptnInput${num}`).value.trim());
         return;
       }
 
-      // Tampilkan tulisan "Data sedang dimuat..." langsung
-      dropdown.innerHTML = getLoadingHTML();
+      dropdown.innerHTML = getLoadingHTML("Mengunduh daftar seluruh PTN...");
       dropdown.classList.remove('hidden');
 
-      // Ambil data jika belum sedang diproses
-      fetchGlobalPTNList(() => {
-        renderPTNDropdown(num, globalPTNList, document.getElementById(`ptnInput${num}`).value.trim());
+      fetchAllPTNFromSpreadsheet(() => {
+        if (globalPTNList && globalPTNList.length > 0) {
+          renderPTNDropdown(num, globalPTNList, document.getElementById(`ptnInput${num}`).value.trim());
+        } else {
+          dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-gray-400 text-center">Gagal memuat PTN dari Spreadsheet</div>`;
+        }
       });
     }
 
     function handlePTNInput(num) {
       const query = document.getElementById(`ptnInput${num}`).value.trim();
-      
-      // Jika teks diubah berbeda dari PTN terpilih, reset jurusan
+
       if (query !== selectedPTN[num]) {
         selectedPTN[num] = '';
         resetJurusanField(num);
@@ -235,25 +261,6 @@
       } else {
         handlePTNFocus(num);
       }
-    }
-
-    function fetchGlobalPTNList(callback) {
-      if (isFetchingGlobalPTN) return;
-      isFetchingGlobalPTN = true;
-
-      // Cari kata kunci umum untuk memancing data PTN
-      fetch(`${SCRIPT_URL}?action=search&q=a`)
-        .then(res => res.json())
-        .then(res => {
-          isFetchingGlobalPTN = false;
-          if (res.status === 'success' && res.data) {
-            globalPTNList = [...new Set(res.data.map(item => item.ptnProdi.split(' - ')[0].trim()))].sort();
-            if (callback) callback();
-          }
-        })
-        .catch(() => {
-          isFetchingGlobalPTN = false;
-        });
     }
 
     function renderPTNDropdown(num, ptns, filterText = '') {
@@ -288,40 +295,36 @@
       document.getElementById(`ptnInput${num}`).value = ptnName;
       hideDropdown(`dropdownPTN${num}`);
 
-      // Aktifkan kolom jurusan
+      // Aktifkan input jurusan
       const jurusanInput = document.getElementById(`jurusanInput${num}`);
       jurusanInput.disabled = false;
       jurusanInput.classList.remove('bg-gray-50');
-      jurusanInput.placeholder = `Klik untuk memilih Jurusan di ${ptnName}...`;
+      jurusanInput.placeholder = `Klik untuk memilih jurusan di ${ptnName}...`;
       jurusanInput.value = '';
       selectedJurusan[num] = '';
       document.getElementById(`selectedPtnProdi${num}`).value = '';
 
-      // Prefetch jurusan untuk PTN yang dipilih di background
+      // Prefetch jurusan untuk PTN terpilih
       fetchJurusanForPTN(ptnName);
     }
 
     // ==========================================
-    // 2. JURUSAN / PRODI HANDLERS
+    // 2. AMBIL JURUSAN PER PTN DARI SPREADSHEET
     // ==========================================
-
     function handleJurusanFocus(num) {
       const ptnName = selectedPTN[num] || document.getElementById(`ptnInput${num}`).value.trim();
       if (!ptnName) return;
 
       const dropdown = document.getElementById(`dropdownJurusan${num}`);
 
-      // Jika data jurusan PTN tersebut sudah ada di cache
       if (ptnJurusanCache[ptnName]) {
         renderJurusanDropdown(num, ptnName, ptnJurusanCache[ptnName], document.getElementById(`jurusanInput${num}`).value.trim());
         return;
       }
 
-      // Tampilkan tulisan "Data sedang dimuat..." langsung
-      dropdown.innerHTML = getLoadingHTML();
+      dropdown.innerHTML = getLoadingHTML(`Memuat jurusan di ${ptnName}...`);
       dropdown.classList.remove('hidden');
 
-      // Ambil data jurusan dari server
       fetchJurusanForPTN(ptnName, () => {
         renderJurusanDropdown(num, ptnName, ptnJurusanCache[ptnName] || [], document.getElementById(`jurusanInput${num}`).value.trim());
       });
@@ -400,7 +403,7 @@
         }).join('');
         dropdown.classList.remove('hidden');
       } else {
-        dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-gray-400 text-center">Jurusan tidak ditemukan di ${escapeHtml(ptnName)}</div>`;
+        dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-gray-400 text-center">Jurusan tidak ditemukan</div>`;
         dropdown.classList.remove('hidden');
       }
     }
@@ -432,7 +435,9 @@
       }
     }
 
-    // CEK DATA LAMA SISWA (JIKA EDIT / UBAH DATA)
+    // ==========================================
+    // 3. CEK DATA LAMA SISWA (JIKA WA DITISI)
+    // ==========================================
     function checkExistingData() {
       const wa = document.getElementById('wa').value.trim();
       if (!wa) return;
@@ -486,7 +491,9 @@
         });
     }
 
-    // FORM SUBMIT HANDLER
+    // ==========================================
+    // 4. SIMPAN/UPDATE DATA SISWA
+    // ==========================================
     function handleSubmit(e) {
       e.preventDefault();
 
@@ -564,12 +571,12 @@
       return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
     }
 
-    // Pre-load data PTN secara diam-diam di background saat halaman pertama kali terbuka
+    // Mengunduh seluruh data PTN saat pertama kali web diakses
     window.addEventListener('DOMContentLoaded', () => {
-      fetchGlobalPTNList();
+      fetchAllPTNFromSpreadsheet();
     });
 
-    // Auto close dropdown saat klik di luar area input
+    // Menutup dropdown secara otomatis saat mengeklik area luar
     document.addEventListener('click', function(e) {
       [1, 2].forEach(num => {
         const ptnContainer = document.getElementById(`ptnContainer${num}`);
