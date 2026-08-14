@@ -15,6 +15,14 @@
       border-bottom-left-radius: 36px;
       border-bottom-right-radius: 36px;
     }
+    /* Smooth Scrollbar Dropdown */
+    .dropdown-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .dropdown-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body class="min-h-screen pb-12">
@@ -64,17 +72,19 @@
             <!-- PTN 1 -->
             <div class="relative" id="ptnContainer1">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">1. Cari Universitas / PTN</label>
-              <input type="text" id="ptnInput1" required placeholder="Ketik PTN (Contoh: UNIVERSITAS INDONESIA)" oninput="handleSearchPTN(1)" autocomplete="off"
+              <input type="text" id="ptnInput1" required placeholder="Klik untuk memilih Universitas / PTN..." 
+                onclick="handlePTNFocus(1)" oninput="handlePTNInput(1)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
-              <div id="dropdownPTN1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-48 overflow-y-auto mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownPTN1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
 
             <!-- Jurusan 1 -->
             <div class="relative" id="jurusanContainer1">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">2. Cari Jurusan / Prodi</label>
-              <input type="text" id="jurusanInput1" required disabled placeholder="Pilih PTN terlebih dahulu..." oninput="handleSearchJurusan(1)" onclick="handleJurusanFocus(1)" autocomplete="off"
+              <input type="text" id="jurusanInput1" required disabled placeholder="Pilih PTN terlebih dahulu..." 
+                onclick="handleJurusanFocus(1)" oninput="handleJurusanInput(1)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm bg-gray-50 disabled:cursor-not-allowed">
-              <div id="dropdownJurusan1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-48 overflow-y-auto mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownJurusan1" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
           </div>
           <input type="hidden" id="selectedPtnProdi1">
@@ -88,17 +98,19 @@
             <!-- PTN 2 -->
             <div class="relative" id="ptnContainer2">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">1. Cari Universitas / PTN</label>
-              <input type="text" id="ptnInput2" required placeholder="Ketik PTN (Contoh: INSTITUT PERTANIAN BOGOR)" oninput="handleSearchPTN(2)" autocomplete="off"
+              <input type="text" id="ptnInput2" required placeholder="Klik untuk memilih Universitas / PTN..." 
+                onclick="handlePTNFocus(2)" oninput="handlePTNInput(2)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm">
-              <div id="dropdownPTN2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-48 overflow-y-auto mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownPTN2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
 
             <!-- Jurusan 2 -->
             <div class="relative" id="jurusanContainer2">
               <label class="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">2. Cari Jurusan / Prodi</label>
-              <input type="text" id="jurusanInput2" required disabled placeholder="Pilih PTN terlebih dahulu..." oninput="handleSearchJurusan(2)" onclick="handleJurusanFocus(2)" autocomplete="off"
+              <input type="text" id="jurusanInput2" required disabled placeholder="Pilih PTN terlebih dahulu..." 
+                onclick="handleJurusanFocus(2)" oninput="handleJurusanInput(2)" autocomplete="off"
                 class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-red-500 focus:outline-none text-sm bg-gray-50 disabled:cursor-not-allowed">
-              <div id="dropdownJurusan2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-48 overflow-y-auto mt-1 z-30 divide-y divide-gray-100"></div>
+              <div id="dropdownJurusan2" class="hidden absolute left-0 right-0 bg-white border border-gray-200 rounded-2xl shadow-2xl max-h-56 overflow-y-auto dropdown-scroll mt-1 z-30 divide-y divide-gray-100"></div>
             </div>
           </div>
           <input type="hidden" id="selectedPtnProdi2">
@@ -157,15 +169,15 @@
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqSuyBdYNGpeKz31broAZP6evCHD5ssuYLWSIXmVgW3mU1SSfMwCDWo6NJZswN5-q4/exec";
 
-    // Client-Side Cache untuk Pencarian Super Cepat (0ms Latency)
-    const ptnQueryCache = {};
-    const ptnDataCache = {}; 
-    let abortControllers = {};
+    // Memory Cache
+    let globalPTNList = null;          // List semua PTN unik
+    let ptnJurusanCache = {};          // Map: "NAMA PTN" -> [ array of items ]
+    let isFetchingGlobalPTN = false;
 
     let selectedPTN = { 1: '', 2: '' };
     let selectedJurusan = { 1: '', 2: '' };
 
-    // Format Nomor WA (0 -> 62)
+    // Format WA 0 -> 62
     function formatWA(input) {
       let val = input.value.replace(/[^0-9]/g, '');
       if (val.startsWith('0')) {
@@ -174,65 +186,91 @@
       input.value = val;
     }
 
-    // 1. SEARCH PTN / UNIVERSITAS
-    function handleSearchPTN(num) {
-      const input = document.getElementById(`ptnInput${num}`);
-      const query = input.value.trim();
+    // HTML Loading Indicator
+    function getLoadingHTML() {
+      return `
+        <div class="px-4 py-4 text-xs text-gray-500 font-medium text-center flex items-center justify-center gap-2">
+          <svg class="animate-spin h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Data sedang dimuat...</span>
+        </div>`;
+    }
 
-      // Reset Pilihan Jika Teks Diubah
+    // ==========================================
+    // 1. UNIVERSITAS / PTN HANDLERS
+    // ==========================================
+
+    function handlePTNFocus(num) {
+      const dropdown = document.getElementById(`dropdownPTN${num}`);
+      
+      // Jika data PTN sudah siap di cache
+      if (globalPTNList && globalPTNList.length > 0) {
+        renderPTNDropdown(num, globalPTNList, document.getElementById(`ptnInput${num}`).value.trim());
+        return;
+      }
+
+      // Tampilkan tulisan "Data sedang dimuat..." langsung
+      dropdown.innerHTML = getLoadingHTML();
+      dropdown.classList.remove('hidden');
+
+      // Ambil data jika belum sedang diproses
+      fetchGlobalPTNList(() => {
+        renderPTNDropdown(num, globalPTNList, document.getElementById(`ptnInput${num}`).value.trim());
+      });
+    }
+
+    function handlePTNInput(num) {
+      const query = document.getElementById(`ptnInput${num}`).value.trim();
+      
+      // Jika teks diubah berbeda dari PTN terpilih, reset jurusan
       if (query !== selectedPTN[num]) {
         selectedPTN[num] = '';
         resetJurusanField(num);
-      } else if (selectedPTN[num]) {
-        hideDropdown(`dropdownPTN${num}`);
-        return;
       }
 
-      if (query.length < 2) {
-        hideDropdown(`dropdownPTN${num}`);
-        return;
+      if (globalPTNList) {
+        renderPTNDropdown(num, globalPTNList, query);
+      } else {
+        handlePTNFocus(num);
       }
+    }
 
-      // Batalkan request PTN sebelumnya jika masih berjalan
-      if (abortControllers[`ptn_${num}`]) {
-        abortControllers[`ptn_${num}`].abort();
-      }
+    function fetchGlobalPTNList(callback) {
+      if (isFetchingGlobalPTN) return;
+      isFetchingGlobalPTN = true;
 
-      // ⚡ FAST PATH: Ambil langsung dari memory cache jika pernah dicari
-      const cacheKey = query.toLowerCase();
-      if (ptnQueryCache[cacheKey]) {
-        renderPTNDropdown(num, ptnQueryCache[cacheKey]);
-        return;
-      }
-
-      const controller = new AbortController();
-      abortControllers[`ptn_${num}`] = controller;
-
-      fetch(`${SCRIPT_URL}?action=search&q=${encodeURIComponent(query)}`, { signal: controller.signal })
+      // Cari kata kunci umum untuk memancing data PTN
+      fetch(`${SCRIPT_URL}?action=search&q=a`)
         .then(res => res.json())
         .then(res => {
+          isFetchingGlobalPTN = false;
           if (res.status === 'success' && res.data) {
-            const ptns = [...new Set(res.data.map(item => item.ptnProdi.split(' - ')[0].trim()))];
-            ptnQueryCache[cacheKey] = ptns; // Cache hasil
-            renderPTNDropdown(num, ptns);
-          } else {
-            renderPTNDropdown(num, []);
+            globalPTNList = [...new Set(res.data.map(item => item.ptnProdi.split(' - ')[0].trim()))].sort();
+            if (callback) callback();
           }
         })
-        .catch(err => {
-          if (err.name !== 'AbortError') hideDropdown(`dropdownPTN${num}`);
+        .catch(() => {
+          isFetchingGlobalPTN = false;
         });
     }
 
-    function renderPTNDropdown(num, ptns) {
+    function renderPTNDropdown(num, ptns, filterText = '') {
       const dropdown = document.getElementById(`dropdownPTN${num}`);
-      if (selectedPTN[num]) {
+      if (selectedPTN[num] && document.getElementById(`ptnInput${num}`).value.trim() === selectedPTN[num]) {
         hideDropdown(`dropdownPTN${num}`);
         return;
       }
 
-      if (ptns.length > 0) {
-        dropdown.innerHTML = ptns.map(ptn => `
+      const keywords = filterText.toLowerCase().split(' ').filter(k => k.length > 0);
+      const filtered = ptns.filter(ptn => {
+        const lower = ptn.toLowerCase();
+        return keywords.length === 0 || keywords.every(kw => lower.includes(kw));
+      });
+
+      if (filtered.length > 0) {
+        dropdown.innerHTML = filtered.map(ptn => `
           <div onmousedown="selectPTN(${num}, '${escapeJs(ptn)}'); event.preventDefault();" 
                class="px-4 py-2.5 hover:bg-red-50 cursor-pointer text-xs text-gray-700 font-semibold transition-colors">
             ${escapeHtml(ptn)}
@@ -240,16 +278,12 @@
         `).join('');
         dropdown.classList.remove('hidden');
       } else {
-        dropdown.innerHTML = `<div class="px-4 py-2.5 text-xs text-gray-400 text-center">PTN tidak ditemukan</div>`;
+        dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-gray-400 text-center">PTN tidak ditemukan</div>`;
         dropdown.classList.remove('hidden');
       }
     }
 
     function selectPTN(num, ptnName) {
-      // Hentikan SEMUA pencarian yang sedang berjalan secara paksa
-      if (abortControllers[`ptn_${num}`]) abortControllers[`ptn_${num}`].abort();
-      if (abortControllers[`jur_${num}`]) abortControllers[`jur_${num}`].abort();
-
       selectedPTN[num] = ptnName;
       document.getElementById(`ptnInput${num}`).value = ptnName;
       hideDropdown(`dropdownPTN${num}`);
@@ -258,97 +292,89 @@
       const jurusanInput = document.getElementById(`jurusanInput${num}`);
       jurusanInput.disabled = false;
       jurusanInput.classList.remove('bg-gray-50');
-      jurusanInput.placeholder = `Ketik Jurusan di ${ptnName}...`;
+      jurusanInput.placeholder = `Klik untuk memilih Jurusan di ${ptnName}...`;
       jurusanInput.value = '';
       selectedJurusan[num] = '';
       document.getElementById(`selectedPtnProdi${num}`).value = '';
 
-      // 🚀 Pre-fetch seluruh jurusan PTN ini di background agar pencarian jurusan nantinya INSTAN
-      prefetchPTNJurusan(num, ptnName);
+      // Prefetch jurusan untuk PTN yang dipilih di background
+      fetchJurusanForPTN(ptnName);
     }
 
-    function prefetchPTNJurusan(num, ptnName) {
-      if (ptnDataCache[ptnName]) return; // Sudah di-cache
+    // ==========================================
+    // 2. JURUSAN / PRODI HANDLERS
+    // ==========================================
 
-      const controller = new AbortController();
-      abortControllers[`prefetch_${num}`] = controller;
-
-      fetch(`${SCRIPT_URL}?action=search&q=${encodeURIComponent(ptnName)}`, { signal: controller.signal })
-        .then(res => res.json())
-        .then(res => {
-          if (res.status === 'success' && res.data) {
-            ptnDataCache[ptnName] = res.data;
-          }
-        })
-        .catch(() => {});
-    }
-
-    // 2. SEARCH JURUSAN / PRODI
     function handleJurusanFocus(num) {
-      if (!selectedJurusan[num]) {
-        handleSearchJurusan(num);
-      }
-    }
-
-    function handleSearchJurusan(num) {
       const ptnName = selectedPTN[num] || document.getElementById(`ptnInput${num}`).value.trim();
       if (!ptnName) return;
 
-      const jurusanInput = document.getElementById(`jurusanInput${num}`);
-      const query = jurusanInput.value.trim();
+      const dropdown = document.getElementById(`dropdownJurusan${num}`);
 
-      // Jika teks jurusan cocok dengan pilihan terkonfirmasi, JANGAN buka dropdown
-      if (selectedJurusan[num] && query === selectedJurusan[num]) {
-        hideDropdown(`dropdownJurusan${num}`);
+      // Jika data jurusan PTN tersebut sudah ada di cache
+      if (ptnJurusanCache[ptnName]) {
+        renderJurusanDropdown(num, ptnName, ptnJurusanCache[ptnName], document.getElementById(`jurusanInput${num}`).value.trim());
         return;
       }
 
-      // Reset status jika user mengedit teks
+      // Tampilkan tulisan "Data sedang dimuat..." langsung
+      dropdown.innerHTML = getLoadingHTML();
+      dropdown.classList.remove('hidden');
+
+      // Ambil data jurusan dari server
+      fetchJurusanForPTN(ptnName, () => {
+        renderJurusanDropdown(num, ptnName, ptnJurusanCache[ptnName] || [], document.getElementById(`jurusanInput${num}`).value.trim());
+      });
+    }
+
+    function handleJurusanInput(num) {
+      const ptnName = selectedPTN[num] || document.getElementById(`ptnInput${num}`).value.trim();
+      if (!ptnName) return;
+
+      const query = document.getElementById(`jurusanInput${num}`).value.trim();
+
       if (query !== selectedJurusan[num]) {
         selectedJurusan[num] = '';
         document.getElementById(`selectedPtnProdi${num}`).value = '';
       }
 
-      // Batalkan pencarian jurusan sebelumnya jika masih berlangsung
-      if (abortControllers[`jur_${num}`]) {
-        abortControllers[`jur_${num}`].abort();
+      if (ptnJurusanCache[ptnName]) {
+        renderJurusanDropdown(num, ptnName, ptnJurusanCache[ptnName], query);
+      } else {
+        handleJurusanFocus(num);
       }
+    }
 
-      // ⚡ INSTAN PATH: Jika data jurusan PTN sudah ada di memori cache RAM
-      if (ptnDataCache[ptnName]) {
-        filterAndRenderJurusan(num, ptnName, ptnDataCache[ptnName], query);
+    function fetchJurusanForPTN(ptnName, callback) {
+      if (ptnJurusanCache[ptnName]) {
+        if (callback) callback();
         return;
       }
 
-      // PATH BIASA: Ambil dari server dan simpan ke cache
-      const controller = new AbortController();
-      abortControllers[`jur_${num}`] = controller;
-
-      fetch(`${SCRIPT_URL}?action=search&q=${encodeURIComponent(ptnName)}`, { signal: controller.signal })
+      fetch(`${SCRIPT_URL}?action=search&q=${encodeURIComponent(ptnName)}`)
         .then(res => res.json())
         .then(res => {
           if (res.status === 'success' && res.data) {
-            ptnDataCache[ptnName] = res.data; // Cache ke memori
-            filterAndRenderJurusan(num, ptnName, res.data, query);
+            ptnJurusanCache[ptnName] = res.data;
           } else {
-            filterAndRenderJurusan(num, ptnName, [], query);
+            ptnJurusanCache[ptnName] = [];
           }
+          if (callback) callback();
         })
-        .catch(err => {
-          if (err.name !== 'AbortError') hideDropdown(`dropdownJurusan${num}`);
+        .catch(() => {
+          ptnJurusanCache[ptnName] = [];
+          if (callback) callback();
         });
     }
 
-    function filterAndRenderJurusan(num, ptnName, data, query) {
+    function renderJurusanDropdown(num, ptnName, data, filterText = '') {
       const dropdown = document.getElementById(`dropdownJurusan${num}`);
-
-      // Jika jurusan sudah terpilih, tutup & jangan render ulang
-      if (selectedJurusan[num]) {
+      if (selectedJurusan[num] && document.getElementById(`jurusanInput${num}`).value.trim() === selectedJurusan[num]) {
         hideDropdown(`dropdownJurusan${num}`);
         return;
       }
 
-      const keywords = query.toLowerCase().split(' ').filter(k => k.length > 0);
+      const keywords = filterText.toLowerCase().split(' ').filter(k => k.length > 0);
 
       const filtered = data.filter(item => {
         const parts = item.ptnProdi.split(' - ');
@@ -374,14 +400,12 @@
         }).join('');
         dropdown.classList.remove('hidden');
       } else {
-        dropdown.innerHTML = `<div class="px-4 py-2.5 text-xs text-gray-400 text-center">Jurusan tidak ditemukan</div>`;
+        dropdown.innerHTML = `<div class="px-4 py-3 text-xs text-gray-400 text-center">Jurusan tidak ditemukan di ${escapeHtml(ptnName)}</div>`;
         dropdown.classList.remove('hidden');
       }
     }
 
     function selectJurusan(num, fullPtnProdi, prodiOnly) {
-      if (abortControllers[`jur_${num}`]) abortControllers[`jur_${num}`].abort();
-
       selectedJurusan[num] = prodiOnly;
       document.getElementById(`jurusanInput${num}`).value = prodiOnly;
       document.getElementById(`selectedPtnProdi${num}`).value = fullPtnProdi;
@@ -500,7 +524,7 @@
           showStatus('Gagal menyimpan data.', 'text-red-700 bg-red-50 border-red-200');
         }
       })
-      .catch(err => {
+      .catch(() => {
         btn.disabled = false;
         btn.innerText = "Simpan / Ubah Pilihan";
         showStatus('Terjadi kesalahan koneksi.', 'text-red-700 bg-red-50 border-red-200');
@@ -539,6 +563,11 @@
       if (!text) return '';
       return text.replace(/'/g, "\\'").replace(/"/g, '\\"');
     }
+
+    // Pre-load data PTN secara diam-diam di background saat halaman pertama kali terbuka
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchGlobalPTNList();
+    });
 
     // Auto close dropdown saat klik di luar area input
     document.addEventListener('click', function(e) {
